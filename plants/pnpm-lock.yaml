@@ -23,6 +23,9 @@ dependencies:
   vue-router:
     specifier: ^4.0.0
     version: 4.2.5(vue@3.3.6)
+  vue3-toastify:
+    specifier: ^0.1.14
+    version: 0.1.14(vue@3.3.6)
 
 devDependencies:
   '@quasar/app-vite':
@@ -3744,6 +3747,18 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.5.1
       vue: 3.3.6(typescript@4.9.5)
+
+  /vue3-toastify@0.1.14(vue@3.3.6):
+    resolution: {integrity: sha512-2wyzMhWq8IjTclL25tqKWknDFdFI1vPueMGZpHNlPWf6TBfxBycBANS+2n4W1xD7tHhX4G6HhCe31sle6OpwYQ==}
+    engines: {node: '>=16', npm: '>=7'}
+    peerDependencies:
+      vue: '>=3.2.0'
+    peerDependenciesMeta:
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.3.6(typescript@4.9.5)
+    dev: false
 
   /vue@3.3.6(typescript@4.9.5):
     resolution: {integrity: sha512-jJIDETeWJnoY+gfn4ZtMPMS5KtbP4ax+CT4dcQFhTnWEk8xMupFyQ0JxL28nvT/M4+p4a0ptxaV2WY0LiIxvRg==}

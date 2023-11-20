@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/index',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/UserLAyout.vue'),
     children: [
       { path: '', name: '/index', component: () => import('pages/IndexPage.vue') },
       { path: '/recipes', component: () => import('pages/RecipesPage.vue') },
@@ -20,6 +20,14 @@ const routes: RouteRecordRaw[] = [
       { path: '/ornamental', component: () => import('pages/OrnamentalPage.vue') },
       { path: '/industry', component: () => import('pages/IndustryPage.vue') },
       { path: '/article', component: () => import('pages/ArticleExample.vue') }
+    ]
+  },
+  {
+    path: '/admin',
+    component: () => import('layouts/AdminLayout.vue'),
+    children: [
+      { path: '', name: '/admin', component: () => import('pages/Admin/ArticlesList.vue') },
+      { path: '/create_article', component: () => import('pages/Admin/CreateArticle.vue') }
     ]
   },
 

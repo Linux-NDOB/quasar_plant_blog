@@ -1,42 +1,39 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="main-container">
-    <q-header reveal elevated class="">
-      <q-toolbar class="bg-teal-9">
-        <div class="absolute-center flex">
-          <q-avatar class="">
-            <img
-              src="https://imgs.search.brave.com/Un5mw-A8LI1I78IEPRQYgCsf-5EOu4tvHV3UYAAPERo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly91eHdp/bmcuY29tL3dwLWNv/bnRlbnQvdGhlbWVz/L3V4d2luZy9kb3du/bG9hZC9uYXR1cmUt/YW5kLWVudmlyb25t/ZW50L2Vjby1mcmll/bmRseS1pY29uLnN2/Zw.svg">
-          </q-avatar>
-
-          <q-toolbar-title class="text-h5 lato-bold-italic">
-            Blog de plantas
-          </q-toolbar-title>
-           </div>
-           <router-link to="/" class="router-link"><q-btn class="absolute-bottom-right vertical-middle q-mr-sm q-mb-sm" flat round dense icon="home" /></router-link>
-         </q-toolbar>
+    <q-header reveal elevated>
+      <q-toolbar class="bg-black bottom-border">
+        <q-toolbar-title>
+          <q-img class="self-center" src="../assets/white.svg" style="width: 12%; max-height: 50px;"></q-img>
+        </q-toolbar-title>
+      </q-toolbar>
     </q-header>
 
-<q-footer elevated class="bg-teal-10">
-  <q-toolbar>
-      <q-avatar class="q-ml-md">
-        <img src="https://imgs.search.brave.com/Un5mw-A8LI1I78IEPRQYgCsf-5EOu4tvHV3UYAAPERo/rs:fit:860:0:0/g:ce/aHR0cHM6Ly91eHdp/bmcuY29tL3dwLWNv/bnRlbnQvdGhlbWVz/L3V4d2luZy9kb3du/bG9hZC9uYXR1cmUt/YW5kLWVudmlyb25t/ZW50L2Vjby1mcmll/bmRseS1pY29uLnN2/Zw.svg">
-      </q-avatar>
-      <q-toolbar-title class="text-h5">
-        Blog de plantas
-      </q-toolbar-title>
-      <div>Todos los derechos reservados</div>
-  </q-toolbar>
-</q-footer>
+    <q-footer elevated class="bg-black">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-img class="self-center" src="../assets/white.svg" style="width: 15%; max-height: 50px;"></q-img>
+        </q-toolbar-title>
+        <div>Todos los derechos reservados</div>
+      </q-toolbar>
+    </q-footer>
 
-    <q-page-container class="flex justify-center">
-      <router-view/>
+    <q-page-container class="flex justify-center align-items-center">
+      <div class="background-image"></div>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
-<style scoped>
-.main-container {
-  max-width: 80%; /* Adjust as needed */
-  margin: 0 auto; /* This centers the container */
-}
+<style scoped lang="sass">
+.background-image
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-image: url('https://images.pexels.com/photos/807598/pexels-photo-807598.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
+    background-size: fill
+    background-position: center
+    /* You can add more background properties as needed */
+    z-index: -1 /* Ensure the background is behind the form inputs */
 </style>

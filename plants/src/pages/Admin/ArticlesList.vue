@@ -1,10 +1,9 @@
 <template>
   <q-page>
-  <MainCard></MainCard>
+    <ArticleList />
   </q-page>
 </template>
 
 <script setup lang="ts">
-import MainCard from "components/Admin/ArticleList.vue"
-// row items-center justify-evenly
+import ArticleList from 'src/components/Admin/ArticleList.vue'
 </script>

@@ -1,10 +1,7 @@
 <template>
-  <q-page>
-  <MainCard></MainCard>
-  </q-page>
+  <CCreateArticle />
 </template>
 
-<script setup lang="ts">
-import MainCard from "components/MainCard.vue"
-// row items-center justify-evenly
+<script setup>
+import CCreateArticle from 'src/components/Admin/CCreateArticle.vue'
 </script>

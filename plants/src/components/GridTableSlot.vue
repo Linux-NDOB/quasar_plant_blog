@@ -1,18 +1,9 @@
 <template>
   <div class="q-pa-md">
-    <q-table
-      title="Listado de recetas"
-      :rows="rows"
-      :columns="columns"
-      row-key="name"
-      selection="multiple"
-      v-model:selected="selected"
-      :filter="filter"
-      grid
-      hide-header
-    >
+    <q-table grid grid-header flat bordered title="Listado de Recetas" :rows="rows" :columns="columns"
+      row-key="name" :filter="filter" hide-header class="lato-bold-italic">
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar articulo">
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
@@ -20,29 +11,21 @@
       </template>
 
       <template v-slot:item="props">
-        <div
-          class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
+        <div class="q-pa-md col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition"
           :style="props.selected ? 'transform: scale(0.95);' : ''">
-          <q-card bordered flat :class="props.selected ? ($q.dark.isActive ? 'bg-grey-9' : 'bg-grey-2') : ''">
-          <q-card-section>
-          <q-img
-          :src="props.row.image_url"
-          class="rounded-borders my-image"
-          />
-        </q-card-section>
-            <q-list dense>
-              <q-item v-for="col in props.cols.filter(col => col.name !== 'desc')" :key="col.name">
-            <q-separator />
-                <q-item-section>
-                  <q-item-label>{{ col.label }}</q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-item-label caption>{{ col.value }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-            <q-btn class="q-my-md q-mx-md" color="positive">Leer articulo</q-btn>
-          </q-card>
+          <div class="q-pa-md row items-start q-gutter-md">
+            <q-card class="recipe-card" flat bordered>
+              <q-img :src="props.row.image" class="my-image" />
+
+              <q-card-section>
+                <div class="text-bold q-mt-sm">Titulo: {{ props.row.title }}</div>
+              </q-card-section>
+
+              <q-card-actions>
+                <router-link :to="{ name: '/read-recipe/', params: { id: props.row.recipe_id } }" > <q-btn flat color="primary" label="Leer" /></router-link>
+              </q-card-actions>
+            </q-card>
+          </div>
         </div>
       </template>
 
@@ -50,52 +33,49 @@
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+const expanded = ref(false)
+const lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+const host = 'https://jfuton.pythonanywhere.com/'
+
+const get = async () => {
+  const query = await fetch(host + 'api/recipes/')
+  return await query.json()
+}
+
+const filter = ref('')
 
 const columns = [
-  { name: 'Nombre planta', align: 'center', label: 'Nombre planta', field: 'nombre_planta', sortable: true },
-  { name: 'Nombre receta', align: 'center', label: 'Nombre receta', field: 'nombre_receta', sortable: true }
+  { name: 'fat', label: 'Titulo', field: 'title', align: 'center' }
 ]
 
-const rows = [
-  {
-    nombre_planta: "Manzanilla",
-    nombre_receta: "Bebe Manzanilla en...",
-    image_url: "https://pymstatic.com/102597/conversions/manzanilla-default_webp.webp"
-  },
-  {
-    nombre_planta: "Aloe Vera",
-    nombre_receta: "Aloe Vera en la ma...",
-    image_url: "https://pymstatic.com/102596/conversions/aloe-default_webp.webp"
-  },
-  {
-    nombre_planta: "Ajo",
-    nombre_receta: "Haz esta mezcla de Ajo...",
-    image_url: "https://pymstatic.com/102598/conversions/ajo-default_webp.webp"
-  },
-  {
-    nombre_planta: "Jengibre",
-    nombre_receta: "Esta receta de Gengibre...",
-    image_url: "https://pymstatic.com/28761/conversions/jengibre-default_webp.webp"
-  }
-]
-
-export default {
-  setup () {
-    return {
-      filter: ref(''),
-      selected: ref([]),
-      columns,
-      rows
-    }
-  }
+interface IRows {
+  index?: number | string,
+  recipe_id?: string | number,
+  title?: string | number,
+  content?: string | number,
+  image?: string | number,
 }
-</script>
 
-<style lang="sass">
-.grid-style-transition
-  transition: transform .28s, background-color .28s
-.my-image
-  max-height: 100px
-</style>
+const rows = ref<IRows[]>([])
+
+const fillRows = async () => {
+  const data = await get()
+  let index = 0
+  data.forEach((row: IRows) => {
+    const newRow: IRows = {
+      index,
+      recipe_id: row.recipe_id,
+      title: row.title,
+      content: row.content,
+      image: row.image
+    }
+    rows.value.push(newRow)
+    index += 1
+  })
+}
+
+onMounted(() => fillRows())
+</script>

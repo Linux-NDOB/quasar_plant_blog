@@ -15,7 +15,7 @@
           <q-img class="self-center" src="../assets/white.svg" style="width: 30%; max-height: 50px;"></q-img>
         </q-toolbar-title>
         <q-toolbar-title>
-          <div>Administrador</div>
+          <div class="lato-bold-italic">Administrador</div>
         </q-toolbar-title>
         <router-link to="/" class="router-link"><q-btn class="absolute-bottom-right vertical-middle q-mr-sm q-mb-sm bg-white" flat
             round dense icon="logout" /></router-link>
@@ -30,7 +30,7 @@
         <q-list bordered class="rounded-borders">
           <q-item clickable v-ripple>
               <q-item-section>
-                  <router-link to="/index" class="router-link text-bold"> Opciones de Administrador</router-link>
+                  <a class="router-link text-bold lato-bold-italic"> Opciones de Administrador</a>
               </q-item-section>
             </q-item>
 
@@ -40,7 +40,7 @@
               </q-item-section>
 
               <q-item-section>
-                  <router-link to="/index" class="router-link"> Gestionar Articulos</router-link>
+                  <router-link to="/list-articles" class="router-link"> Gestionar Articulos</router-link>
               </q-item-section>
             </q-item>
         <q-item clickable v-ripple>
@@ -49,7 +49,7 @@
               </q-item-section>
 
               <q-item-section>
-              <router-link to="/recipes" class="router-link"> Gestionar recetas</router-link>
+              <router-link to="/list-recipes" class="router-link"> Gestionar recetas</router-link>
               </q-item-section>
             </q-item>
         <q-item clickable v-ripple>
@@ -57,7 +57,7 @@
                 <q-icon name="newspaper" />
               </q-item-section>
               <q-item-section>
-              <router-link to="/article" class="router-link"> Crear articulo</router-link>
+              <router-link to="/create-article" class="router-link"> Crear articulo</router-link>
               </q-item-section>
             </q-item>
 
@@ -66,7 +66,7 @@
                 <q-icon name="yard" />
               </q-item-section>
               <q-item-section>
-              <router-link to="/article" class="router-link"> Crear Receta</router-link>
+              <router-link to="/create-recipe" class="router-link"> Crear Receta</router-link>
               </q-item-section>
             </q-item>
 

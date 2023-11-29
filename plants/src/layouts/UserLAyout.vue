@@ -96,23 +96,7 @@
               <router-link to="/recipes" class="router-link"> Listado de recetas</router-link>
               </q-item-section>
             </q-item>
-        <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon :name="symOutlinedArticle" />
-              </q-item-section>
-              <q-item-section>
-              <router-link to="/article" class="router-link"> Ejemplo de articulo</router-link>
-              </q-item-section>
-            </q-item>
-        <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon :name="symOutlinedSettings" />
-              </q-item-section>
 
-              <q-item-section>
-                <router-link to="/settings" class="router-link"> Ajustes</router-link>
-              </q-item-section>
-            </q-item>
        <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon :name="symOutlinedLogout" />

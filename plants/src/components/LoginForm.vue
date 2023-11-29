@@ -1,93 +1,35 @@
-<template>
-  <div class="splitter flex justify-center">
-    <q-splitter class="mt-sm bordered" v-model="splitterModel" style="height: 100%; width: 100%;">
+<template lang="pug">
+.splitter.flex.justify-center
+  q-splitter.mt-sm.bordered(v-model="splitterModel", style="height: 100%; width: 100%")
 
-      <template v-slot:before>
-        <q-tabs v-model="tab" vertical class="text-white">
-          <q-tab name="mails" icon="password" label="Entrar" />
-          <q-tab name="alarms" icon="how_to_reg" label="Registrarse" />
-          <q-tab name="admin" icon="how_to_reg" label="Admin" />
-        </q-tabs>
-      </template>
+    template(v-slot:before)
+      q-tabs(v-model="tab" vertical class="text-white")
+        q-tab(name="mails" icon="password" label="Entrar")
+        q-tab(name="alarms" icon="how_to_reg" label="Registrarse")
+        q-tab(name="admin" icon="how_to_reg" label="Admin")
 
-      <template v-slot:after>
-        <q-tab-panels v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up">
-          <q-tab-panel name="mails">
-            <q-form @submit="validate()" class="q-gutter-md">
-              <q-input standout v-model="email" type="email" prefix="Email:" hint="Campo para correo electronico">
-                <template v-slot:prepend>
-                  <q-icon name="mail" color="green-10" />
-                </template>
-              </q-input>
-              <q-input standout v-model="pasword" :type="isPwd ? 'password' : 'text'" hint="Campo para contrasenia"
-                prefix="Contrasenia:">
-                <template v-slot:prepend>
-                  <q-icon name="password" color="green-10" />
-                </template>
-                <template v-slot:append>
-                  <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"
-                    color="green-10" />
-                </template>
-              </q-input>
+    template(v-slot:after)
+      q-tab-panels(v-model="tab" animated swipeable vertical transition-prev="jump-up" transition-next="jump-up")
+        q-tab-panel(name="mails")
+          Form(:validation-schema='userSchema' @submit='validateUser()')
+            EmailInput(:name="'email'" v-model='email')
+            PasswordInput(:name="'password'" v-model='password')
+            div.flex.justify-center
+              q-btn(label="Entrar" type="submit" color="green-10" square)
 
-              <div class="flex justify-center flat bordered">
-                <q-btn label="Entrar" type="submit" color="green-10" class="q-ml-sm" square />
-              </div>
-            </q-form>
-          </q-tab-panel>
+        q-tab-panel(name="alarms")
+          Form(:validation-schema='registerSchema' @submit='registerUser()')
+            EmailInput(:name="'email'" v-model='registerEmail')
+            PasswordInput(:name="'password'" v-model='registerPassword')
+            div.flex.justify-center.flat.bordered.mb-4
+              q-btn(label="Registrarse" type="submit" color="green-10" class="mb-sm" square)
 
-          <q-tab-panel name="alarms">
-            <q-form @submit="register()" class="q-gutter-md">
-              <q-input standout v-model="email" type="email" prefix="Email:" hint="Campo para correo electronico">
-                <template v-slot:prepend>
-                  <q-icon name="mail" color="green-10" />
-                </template>
-              </q-input>
-              <q-input standout v-model="pasword" :type="isPwd ? 'password' : 'text'" hint="Campo para contrasenia"
-                prefix="Contrasenia:">
-                <template v-slot:prepend>
-                  <q-icon name="password" color="green-10" />
-                </template>
-                <template v-slot:append>
-                  <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"
-                    color="green-10" />
-                </template>
-              </q-input>
-
-              <div class="flex justify-center flat bordered">
-                <q-btn label="Registrarse" type="submit" color="green-10" class="q-ml-sm" square />
-              </div>
-            </q-form>
-          </q-tab-panel>
-
-          <q-tab-panel name="admin">
-            <q-form @submit="admin()" class="q-gutter-md">
-              <q-input standout v-model="email" type="email" prefix="Email:" hint="Campo para correo electronico">
-                <template v-slot:prepend>
-                  <q-icon name="mail" color="green-10" />
-                </template>
-              </q-input>
-              <q-input standout v-model="pasword" :type="isPwd ? 'password' : 'text'" hint="Campo para contrasenia"
-                prefix="Contrasenia:">
-                <template v-slot:prepend>
-                  <q-icon name="password" color="green-10" />
-                </template>
-                <template v-slot:append>
-                  <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"
-                    color="green-10" />
-                </template>
-              </q-input>
-
-              <div class="flex justify-center flat bordered">
-                <q-btn label="Administrar" type="submit" color="green-10" class="q-ml-sm" square />
-              </div>
-            </q-form>
-          </q-tab-panel>
-        </q-tab-panels>
-      </template>
-
-    </q-splitter>
-  </div>
+        q-tab-panel(name="admin")
+          Form(:validation-schema='adminSchema' @submit='validateAdmin()')
+            EmailInput(:name="'email'" v-model='adminEmail')
+            PasswordInput(:name="'password'" v-model='adminPassword')
+            div.flex.justify-center.flat.bordered
+              q-btn(label="Administrar" type="submit" color="green-10" class="q-ml-sm" square)
 </template>
 
 <script setup lang="ts">
@@ -95,38 +37,76 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import { Form } from 'vee-validate'
+import * as yup from "yup"
+import EmailInput from "../components/Inputs/EmailInput.vue"
+import PasswordInput from "../components/Inputs/PasswordInput.vue"
+import { mainStore } from 'src/stores/main-store'
+
+const store = mainStore()
+
+const userSchema = yup.object({
+  email: yup.string().required('Este campo no puede ir vacio')
+    .email('Ingrese un email valido').min(12, 'Minimo 12 caracteres')
+    .max(30, 'Maximo 30 caracteres'),
+  password: yup.string().required('Este campo no puede ir vacio')
+    .min(8, 'Minimo 8 caracteres')
+    .max(20, 'Maximo 20 caracteres')
+})
+
+const registerSchema = yup.object({
+  email: yup.string().required('Este campo no puede ir vacio')
+    .email('Ingrese un email valido').min(12, 'Minimo 12 caracteres')
+    .max(30, 'Maximo 30 caracteres'),
+  password: yup.string().required('Este campo no puede ir vacio')
+    .min(8, 'Minimo 8 caracteres')
+    .max(20, 'Maximo 20 caracteres')
+})
+
+const adminSchema = yup.object({
+  email: yup.string().required('Este campo no puede ir vacio')
+    .email('Ingrese un email valido').min(12, 'Minimo 12 caracteres')
+    .max(30, 'Maximo 30 caracteres'),
+  password: yup.string().required('Este campo no puede ir vacio')
+    .min(5, 'Minimo 5 caracteres')
+    .max(20, 'Maximo 20 caracteres')
+})
 
 const router = useRouter()
 const email = ref('')
 const number = ref(null)
 const text = ref('')
-const pasword = ref('')
+const password = ref('')
 const isPwd = ref(true)
 const tab = ref('mails')
 const splitterModel = ref(20)
+const registerEmail = ref('')
+const adminEmail = ref('')
+const registerPassword = ref('')
+const adminPassword = ref('')
+const host = 'https://jfuton.pythonanywhere.com/'
 
-const clean = () => {
-  email.value = ""
-  pasword.value = ""
-}
+const clean = () => { email.value = ''; password.value = '' }
 
-const notify = () => {
-  toast.error("Datos incorrectos!", { autoClose: 1000 })// ToastOptions
-}
-
+const notify = () => { toast.error("Datos incorrectos!", { autoClose: 1000 }) }
 // LOGIN
-// Get admins list and their credentials
 const get = async () => {
-  const query = await fetch('https://immika.pythonanywhere.com/api/usuarios/')
+  const query = await fetch(host + 'api/users/')
+  return await query.json()
+}
+
+const getAdmin = async () => {
+  const query = await fetch(host + 'api/admins/')
   return await query.json()
 }
 
 // Validate Credentials at login
-const validate = async () => {
+const validateUser = async () => {
   const data = await get()
   for (let i = 0; i < data.length; i += 1) {
     const user = data[i]
-    if (user.email === email.value && user.password === pasword.value) {
+    if (user.email === email.value && user.password === password.value) {
+      store.setUser(user.user_id)
       router.push('index')
       return true
     }
@@ -136,23 +116,27 @@ const validate = async () => {
 }
 
 // Validate Credentials at admin login
-const admin = async () => {
-  if (email.value === "admin@gmail.com" && pasword.value === "admin") {
-    router.push('admin')
-    return true
+const validateAdmin = async () => {
+  const data = await getAdmin()
+  for (let i = 0; i < data.length; i += 1) {
+    const user = data[i]
+    if (user.email === adminEmail.value && user.password === adminPassword.value) {
+      router.push('admin')
+      return true
+    }
   }
   notify()
   clean()
 }
 
 // Validate Credentials at login
-const register = async () => {
+const registerUser = async () => {
   const data = {
-    email: email.value,
-    password: pasword.value
+    email: registerEmail.value,
+    password: registerPassword.value
   }
   const query = await fetch(
-    'https://immika.pythonanywhere.com/api/usuarios/',
+    host + 'api/users/',
     {
       method: 'POST',
       headers: {
@@ -162,9 +146,9 @@ const register = async () => {
     }
   )
   if (query.status === 201) {
-    toast.success("Registrado con exito!", { autoClose: 1000 })// ToastOptions
+    toast.success('Registrado con exito!', { autoClose: 1000 })
   } else {
-    toast.error("Ha ocurrido un error!", { autoClose: 1000 })// ToastOptions
+    toast.error('Ha ocurrido un error!', { autoClose: 1000 })// ToastOptions
   }
 
   clean()

@@ -3,7 +3,7 @@
     <q-header reveal elevated>
       <q-toolbar class="bg-black bottom-border">
         <q-toolbar-title>
-          <q-img class="self-center" src="../assets/white.svg" style="width: 12%; max-height: 50px;"></q-img>
+          <q-img class="self-center" src="../assets/white.svg" style="width: 12%; max-height: 60px;"></q-img>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

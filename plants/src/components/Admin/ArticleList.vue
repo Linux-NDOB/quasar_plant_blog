@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table grid grid-header flat bordered title="Gestionar articulos" :rows="rows.reverse()" :columns="columns"
+    <q-table grid grid-header flat bordered title="Listado de Articulos" :rows="rows.reverse()" :columns="columns"
       row-key="name" :filter="filter" hide-header class="lato-bold-italic">
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">

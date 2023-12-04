@@ -18,7 +18,6 @@ const routes: RouteRecordRaw[] = [
       { path: '/medic', component: () => import('pages/Plants/MedicPage.vue') },
       { path: '/ornamental', component: () => import('pages/Plants/OrnamentalPage.vue') },
       { path: '/industry', component: () => import('pages/Plants/IndustryPage.vue') },
-      { path: '/article', component: () => import('pages/ArticleExample.vue') },
       { path: '/read-article/:id', name: '/read-article/', component: () => import('pages/Read/ReadArticle.vue') },
       { path: '/read-recipe/:id', name: '/read-recipe/', component: () => import('pages/Read/ReadRecipe.vue') }
     ]
